@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Item {
 
     @JsonProperty(value = "product_description")
-    ProductDescription productDescription;
+    private ProductDescription productDescription;
 
     public ProductDescription getProductDescription() {
         return productDescription;

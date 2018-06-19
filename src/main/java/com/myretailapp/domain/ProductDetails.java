@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ProductDetails {
 
-    Product product;
+    private Product product;
 
     public Product getProduct() {
         return product;
