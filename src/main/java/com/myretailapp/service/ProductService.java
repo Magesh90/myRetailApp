@@ -1,6 +1,7 @@
 package com.myretailapp.service;
 
 import com.myretailapp.constants.MyRetailAppConstants;
+import com.myretailapp.dao.ProductPriceDao;
 import com.myretailapp.domain.Price;
 import com.myretailapp.domain.ProductDetails;
 import com.myretailapp.domain.ProductInformation;
@@ -8,10 +9,6 @@ import com.myretailapp.http.client.RedskyRestClient;
 import com.myretailapp.mongodb.repositories.ProductPriceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 
@@ -28,7 +25,7 @@ public class ProductService {
     private String productDetailsUri;
 
     @Autowired
-    MongoTemplate mongoTemplate;
+    ProductPriceDao productPriceDao;
 
     @Autowired
     private ProductPriceRepository productPriceRepository;
@@ -51,18 +48,10 @@ public class ProductService {
     }
 
     public void updateProductPrice(int id, Double price) {
-        Query query = new Query();
-        query.addCriteria(Criteria.where("id").is(id));
-        Update update = new Update();
-        update.set("value", price);
-        Price updatedPrice = mongoTemplate.findAndModify(query, update, Price.class);
+        productPriceDao.updateProductPrice(id, price);
     }
 
     public void updateProductPrice(Price priceInformation) {
-        Query query = new Query();
-        query.addCriteria(Criteria.where("id").is(priceInformation.getId()));
-        Update update = new Update();
-        update.set("value", priceInformation.getValue());
-        Price updatedPrice = mongoTemplate.findAndModify(query, update, Price.class);
+        productPriceDao.updateProductPrice(priceInformation.getId(), priceInformation.getValue());
     }
 }
