@@ -13,7 +13,6 @@ public class Price {
     @Id
     private String identity;
 
-    @JsonIgnore
     private int id;
 
     private Double value;
@@ -21,10 +20,12 @@ public class Price {
     @JsonProperty(value = "currency_code")
     private String currenyCode;
 
+    @JsonIgnore
     public int getId() {
         return id;
     }
 
+    @JsonProperty(value = "id")
     public void setId(int id) {
         this.id = id;
     }
