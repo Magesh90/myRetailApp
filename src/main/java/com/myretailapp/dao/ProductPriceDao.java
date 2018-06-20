@@ -1,6 +1,10 @@
 package com.myretailapp.dao;
 
+import com.mongodb.MongoTimeoutException;
+import com.myretailapp.constants.MyRetailAppConstants;
 import com.myretailapp.domain.Price;
+import com.myretailapp.exception.MyRetailAppTimeoutException;
+import com.myretailapp.exception.UnExpectedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -12,13 +16,24 @@ import org.springframework.stereotype.Component;
 public class ProductPriceDao {
 
     @Autowired
-    MongoTemplate mongoTemplate;
+    private MongoTemplate mongoTemplate;
 
     public void updateProductPrice(int id, Double price) {
-        Query query = new org.springframework.data.mongodb.core.query.Query();
-        query.addCriteria(Criteria.where("id").is(id));
+        Query query = new Query();
+        query.addCriteria(Criteria.where(MyRetailAppConstants.ID).is(id));
         Update update = new Update();
-        update.set("value", price);
-        mongoTemplate.findAndModify(query, update, Price.class);
+        update.set(MyRetailAppConstants.VALUE, price);
+        try {
+            mongoTemplate.findAndModify(query, update, Price.class);
+        } catch (Throwable exception) {
+            handleMongoDbException(exception);
+        }
+    }
+
+    public void handleMongoDbException(Throwable exception) {
+        if (exception instanceof MongoTimeoutException) {
+            throw new MyRetailAppTimeoutException("DB connection timed-out");
+        }
+        throw new UnExpectedException("Unexpected exception occurred during database connection, hence cannot find/update product price");
     }
 }

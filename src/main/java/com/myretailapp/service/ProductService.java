@@ -42,7 +42,12 @@ public class ProductService {
         ProductInformation productInformation = new ProductInformation();
         productInformation.setName(productDetails.getProduct().getItem().getProductDescription().getTitle());
         productInformation.setId(id);
-        Price productPrice = productPriceRepository.findProductPriceById(id);
+        Price productPrice = null;
+        try {
+            productPrice = productPriceRepository.findProductPriceById(id);
+        } catch (Throwable exception) {
+            productPriceDao.handleMongoDbException(exception);
+        }
         productInformation.setPrice(productPrice);
         return productInformation;
     }
