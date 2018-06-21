@@ -5,7 +5,8 @@ Pre-requisites
 1. Install JDK >= 1.7
 2. Install maven - 3.5.3
 3. Install MongoDb - 3.6.5
-3. Install postman for testing the endpoints
+4. Install git - 2.17.1
+5. Install postman for testing the endpoints
 
 How to launch the application?
 1. Git clone the repository in your local machine
