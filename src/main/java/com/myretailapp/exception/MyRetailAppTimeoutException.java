@@ -7,8 +7,14 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class MyRetailAppTimeoutException extends RuntimeException {
 
     private String errorMessage;
-    public MyRetailAppTimeoutException(String message){
+
+    public MyRetailAppTimeoutException(String message) {
         super(message);
         this.errorMessage = message;
     }
+
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+
 }
