@@ -30,7 +30,7 @@ public class ProductService {
     @Autowired
     private ProductPriceRepository productPriceRepository;
 
-    Map buildUriParams(int id) {
+    public Map buildUriParams(int id) {
         HashMap<String, Integer> uriParams = new HashMap<>();
         uriParams.put(MyRetailAppConstants.PRODUCT_ID, id);
         return uriParams;
