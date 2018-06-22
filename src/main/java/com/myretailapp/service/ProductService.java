@@ -2,9 +2,8 @@ package com.myretailapp.service;
 
 import com.myretailapp.constants.MyRetailAppConstants;
 import com.myretailapp.dao.ProductPriceDao;
-import com.myretailapp.domain.Price;
-import com.myretailapp.domain.ProductDetails;
-import com.myretailapp.domain.ProductInformation;
+import com.myretailapp.domain.*;
+import com.myretailapp.exception.UnExpectedException;
 import com.myretailapp.http.client.RedskyRestClient;
 import com.myretailapp.mongodb.repositories.ProductPriceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Component
 public class ProductService {
@@ -36,11 +36,19 @@ public class ProductService {
         return uriParams;
     }
 
+    String getTitleNameFromProductDetails(Product product) {
+        return Optional.of(product).map(Product::getItem).
+                map(Item::getProductDescription).
+                map(ProductDescription::getTitle).orElseGet(() -> {
+            throw new UnExpectedException("Unable to retrieve the title from Redsky");
+        });
+    }
+
     public ProductInformation getProductDetails(int id) {
         ProductDetails productDetails = null;
         productDetails = (ProductDetails) redskyRestClient.exchange(HttpMethod.GET, productDetailsUri, buildUriParams(id), null, ProductDetails.class);
         ProductInformation productInformation = new ProductInformation();
-        productInformation.setName(productDetails.getProduct().getItem().getProductDescription().getTitle());
+        productInformation.setName(getTitleNameFromProductDetails(productDetails.getProduct()));
         productInformation.setId(id);
         Price productPrice = null;
         try {
