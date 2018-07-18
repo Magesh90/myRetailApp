@@ -18,7 +18,7 @@ class Price {
     Double value
 
     @JsonProperty(value = "currency_code")
-    private String currenyCode
+    String currenyCode
 
     @JsonIgnore
     int getId() {
@@ -26,7 +26,7 @@ class Price {
     }
 
     @JsonProperty(value = "id")
-    public void setId(int id) {
+    void setId(int id) {
         this.id = id
     }
 

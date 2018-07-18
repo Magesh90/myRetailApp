@@ -10,18 +10,11 @@ class MyRetailAppExceptionHandlingController {
 
     @ExceptionHandler(UnExpectedException.class)
     ResponseEntity<MyRetailAppExceptionResponse> unExpectedExceptionHandler(UnExpectedException ex) {
-        MyRetailAppExceptionResponse response = new MyRetailAppExceptionResponse()
-        response.setErrorCode("INTERNAL_ERROR")
-        response.setErrorMessage(ex.getErrorMessage())
-        new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR)
+        new ResponseEntity<>(new MyRetailAppExceptionResponse('INTERNAL_ERROR', ex.errorMessage), HttpStatus.INTERNAL_SERVER_ERROR)
     }
 
     @ExceptionHandler(MyRetailAppTimeoutException.class)
     ResponseEntity<MyRetailAppExceptionResponse> timeoutExceptionHandler(MyRetailAppTimeoutException ex) {
-        MyRetailAppExceptionResponse response = new MyRetailAppExceptionResponse()
-        response.setErrorCode("TIMEOUT")
-        response.setErrorMessage(ex.getErrorMessage())
-
-        new ResponseEntity<>(response, HttpStatus.GATEWAY_TIMEOUT)
+        new ResponseEntity<>(new MyRetailAppExceptionResponse('TIMEOUT', ex.errorMessage), HttpStatus.GATEWAY_TIMEOUT)
     }
 }

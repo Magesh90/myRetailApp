@@ -48,8 +48,8 @@ class ProductService {
     ProductInformation getProductDetails(int id) {
         ProductDetails productDetails = (ProductDetails) redskyRestClient.exchange(HttpMethod.GET, productDetailsUri, buildUriParams(id), null, ProductDetails.class)
         ProductInformation productInformation = new ProductInformation()
-        productInformation.setName(getTitleNameFromProductDetails(productDetails.getProduct()))
-        productInformation.setId(id)
+        productInformation.setName(getTitleNameFromProductDetails(productDetails.product))
+        productInformation.id = id
         Price productPrice = null
         try {
             productPrice = productPriceRepository.findProductPriceById(id)
@@ -65,6 +65,6 @@ class ProductService {
     }
 
     void updateProductPrice(Price priceInformation) {
-        productPriceDao.updateProductPrice(priceInformation.getId(), priceInformation.getValue())
+        productPriceDao.updateProductPrice(priceInformation.id, priceInformation.value)
     }
 }

@@ -14,8 +14,4 @@ class UnExpectedException extends RuntimeException {
         this.errorMessage = message
     }
 
-
-    String getErrorMessage() {
-         errorMessage
-    }
 }
