@@ -33,31 +33,29 @@ class ProductService {
     Map buildUriParams(int id) {
         HashMap<String, Integer> uriParams = new HashMap<>()
         uriParams.put(MyRetailAppConstants.PRODUCT_ID, id)
-         uriParams
+        uriParams
     }
 
     String getTitleNameFromProductDetails(Product product) {
         String title = product.item?.productDescription?.title
-        if (title) {
-            title
-        } else {
+        if (!title) {
             throw new UnExpectedException("Unable to retrieve the title from Redsky")
         }
+        title
     }
 
     ProductInformation getProductDetails(int id) {
-        ProductDetails productDetails = (ProductDetails) redskyRestClient.exchange(HttpMethod.GET, productDetailsUri, buildUriParams(id), null, ProductDetails.class)
-        ProductInformation productInformation = new ProductInformation()
-        productInformation.setName(getTitleNameFromProductDetails(productDetails.product))
-        productInformation.id = id
         Price productPrice = null
         try {
             productPrice = productPriceRepository.findProductPriceById(id)
         } catch (Throwable exception) {
             productPriceDao.handleMongoDbException(exception)
         }
-        productInformation.setPrice(productPrice)
-         productInformation
+        ProductDetails productDetails = (ProductDetails) redskyRestClient.exchange(HttpMethod.GET, productDetailsUri, buildUriParams(id), null, ProductDetails.class)
+        ProductInformation productInformation = new ProductInformation(id: id)
+        productInformation.name = getTitleNameFromProductDetails(productDetails.product)
+        productInformation.price = productPrice
+        productInformation
     }
 
     void updateProductPrice(int id, Double price) {
