@@ -2,7 +2,7 @@
 This application is used to retrieve the product details based on its id. The product's name is retrieved from the internal target API using https rest call, and the product's price details is retrieved from the local noSql database. This app also takes a PUT request on the same resource path to update the price details in the database.
   
 Pre-requisites
-1. Install JDK >= 1.7
+1. Install JDK = 1.8
 2. Install maven - 3.5.3
 3. Install MongoDb - 3.6.5
 4. Install git - 2.17.1
