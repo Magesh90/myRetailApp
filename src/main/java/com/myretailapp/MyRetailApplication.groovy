@@ -6,10 +6,12 @@ import org.springframework.boot.web.client.RestTemplateBuilder
 import org.springframework.boot.web.servlet.ServletRegistrationBean
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.PropertySource
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.servlet.DispatcherServlet
 
 @SpringBootApplication
+@PropertySource(value = 'classpath:/config/default.properties')
 class MyRetailApplication extends SpringBootServletInitializer {
     static void main(String[] args) {
         new MyRetailApplication().configure(new SpringApplicationBuilder(MyRetailApplication.class)).run(args)
